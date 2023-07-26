@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.stereotype.Service;
 import test.redis.entity.ChatMessage;
 
 import java.io.IOException;
 
 @Slf4j
+@Service
 public class SubService implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
