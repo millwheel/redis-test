@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.RedisHash;
 @Setter
 @Getter
 @NoArgsConstructor
-@RedisHash(timeToLive = 30)
+@RedisHash
 public class Member {
     private String id;
     private String name;
