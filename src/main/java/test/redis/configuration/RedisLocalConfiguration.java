@@ -11,7 +11,6 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import test.redis.service.SubService;
 
-@Configuration
 public class RedisLocalConfiguration {
 
 
