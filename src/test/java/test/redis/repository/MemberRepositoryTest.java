@@ -18,15 +18,16 @@ public class MemberRepositoryTest {
 
     @Test
     void createMemberTest(){
+        // given
         Member member = new Member();
         String memberId = "132d";
         String memberName = "John";
         member.setId(memberId);
         member.setName(memberName);
-
+        // when
         repository.save(member);
-
         Member savedMember = repository.findById(memberId).orElseGet(null);
+        // then
         Assertions.assertThat(savedMember.getName()).isEqualTo(memberName);
     }
 }
