@@ -15,37 +15,39 @@ import test.redis.entity.ChatMessage;
 import test.redis.service.SubService;
 
 @Configuration
-public class RedisConfiguration {
-    @Value("${spring.redis.host}")
-    private String host;
+public class RedisLocalConfiguration {
 
-    @Value("${spring.redis.port}")
-    private int port;
 
+    // Local Basic connection
+    // Don't need to set up host and port in connection factory if the host is localhost and port is 6379
     @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(host, port);
+    public RedisConnectionFactory connectToLocalRedis() {
+        return new LettuceConnectionFactory();
     }
 
+    // To use redis template to serialize data to json
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setConnectionFactory(connectToLocalRedis());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 
+    // To use pub sub
     @Bean
     MessageListenerAdapter messageListenerAdapter() {
         return new MessageListenerAdapter(new SubService());
     }
 
+    // To use pub sub
     @Bean
     RedisMessageListenerContainer redisContainer() {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(redisConnectionFactory());
+        container.setConnectionFactory(connectToLocalRedis());
         container.addMessageListener(messageListenerAdapter(), new ChannelTopic("topic1"));
         return container;
     }
+
 }
