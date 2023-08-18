@@ -10,7 +10,7 @@ import test.redis.entity.ChatMessage;
 import java.io.IOException;
 
 @Slf4j
-//@Service
+@Service
 public class SubService implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {

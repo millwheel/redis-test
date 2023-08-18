@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import test.redis.entity.ChatMessage;
 
-//@Service
+@Service
 public class PubService {
 
     private final RedisTemplate<Object, Object> redisTemplate;
