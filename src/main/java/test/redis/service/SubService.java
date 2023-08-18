@@ -10,16 +10,18 @@ import test.redis.entity.ChatMessage;
 import java.io.IOException;
 
 @Slf4j
-@Service
+//@Service
 public class SubService implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ChatMessage chatMessage = objectMapper.readValue(message.getBody(), ChatMessage.class);
-            log.info("message sender={}", chatMessage.getSender());
-            log.info("message context={}", chatMessage.getContext());
-        } catch (IOException e) {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            ChatMessage chatMessage = objectMapper.readValue(message.getBody(), ChatMessage.class);
+//            log.info("message sender={}", chatMessage.getSender());
+//            log.info("message context={}", chatMessage.getContext());
+            log.info(message.getBody().toString());
+            message.getBody();
+        } catch (Exception e) {
             log.error("error occurred={}", e.getMessage());
         }
     }

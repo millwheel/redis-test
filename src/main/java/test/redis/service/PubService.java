@@ -6,18 +6,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import test.redis.entity.ChatMessage;
 
-@Service
+//@Service
 public class PubService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
-    public PubService(RedisTemplate<String, Object> redisTemplate) {
+    public PubService(RedisTemplate<Object, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     public void sendMessage(ChatMessage chatMessage) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String messageString = objectMapper.writeValueAsString(chatMessage);
-        redisTemplate.convertAndSend("topic1", messageString);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String messageString = objectMapper.writeValueAsString(chatMessage);
+        redisTemplate.convertAndSend("topic1", chatMessage);
     }
 }
