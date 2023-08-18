@@ -45,7 +45,6 @@ public class RedisCloudConfiguration {
         return redisTemplate;
     }
 
-    @Bean
     MessageListenerAdapter messageListenerAdapter() {
         return new MessageListenerAdapter(new SubService());
     }

@@ -19,33 +19,26 @@ public class RedisLocalConfiguration {
 
     // Local Basic connection
     // Don't need to set up host and port in connection factory if the host is localhost and port is 6379
-    @Bean
     public RedisConnectionFactory connectToLocalRedis() {
         return new LettuceConnectionFactory();
     }
 
     // To use redis template to serialize data to json
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate() {
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(connectToLocalRedis());
-        redisTemplate.setKeySerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setConnectionFactory(connectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 
-    // To use pub sub
+    // To use pub sub, set up the redis message listener container
     @Bean
-    MessageListenerAdapter messageListenerAdapter() {
-        return new MessageListenerAdapter(new SubService());
-    }
-
-    // To use pub sub
-    @Bean
-    RedisMessageListenerContainer redisContainer() {
+    RedisMessageListenerContainer redisContainer(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectToLocalRedis());
-        container.addMessageListener(messageListenerAdapter(), new ChannelTopic("topic1"));
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(new MessageListenerAdapter(new SubService()), new ChannelTopic("topic1"));
         return container;
     }
 
